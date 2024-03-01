@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 #from flask_sqlalchemy import SQLAlchemy
 #pip3 install boto3 flask
 import boto3
-
+from flask import Flask, render_template
 
 application = Flask(__name__, template_folder="app/HTML")
 
@@ -20,25 +20,27 @@ def login():
 def new_login():
     return render_template('new_account.html')
 
-@application.route("/home", methods=['GET', 'POST'])
+@application.route("/home")
 def home():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-
+#    if request.method == 'POST':
+ #       username = request.form['username']
+  #      password = request.form['password']
+    print("Accessed home route"P
     try:
+        print("TRY")
         response = s3.list_objects_v2(Bucket=BUCKET_NAME)
         objects = response.get('Contents', [])[:10]
 
         images = []
         for obj in objects:
             image_url = s3.generate_presigned_url('get_object', Params={'Bucket': BUCKET_NAME, 'Key': obj['Key']})
-            image_name = obj['Key'].split('/')[-1]  # Extract filename from the object key
-            images.append({'url': image_url, 'alt': image_name})
+            caption = obj['Key']  # You may need to modify this depending on how your images are named
+            images.append({'url': image_url, 'caption': caption})
     except Exception as e:
-      
-        return f"Error: {str(e)}", 500
-
+        print("Exception")
+        return render_template('home.html')
+      #  return f"Error: {str(e)}", 500
+    print("End of try/catch")
     return  render_template('home.html', images=images)
 
 
