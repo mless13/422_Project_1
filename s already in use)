@@ -1,0 +1,21 @@
+× nginx.service - The nginx HTTP and reverse proxy server
+     Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; preset: disabled)
+    Drop-In: /usr/lib/systemd/system/nginx.service.d
+             └─php-fpm.conf
+     Active: failed (Result: exit-code) since Fri 2024-03-01 16:57:38 UTC; 1min 0s ago
+   Duration: 49.058s
+    Process: 83210 ExecStartPre=/usr/bin/rm -f /run/nginx.pid (code=exited, status=0/SUCCESS)
+    Process: 83212 ExecStartPre=/usr/sbin/nginx -t (code=exited, status=0/SUCCESS)
+    Process: 83213 ExecStart=/usr/sbin/nginx (code=exited, status=1/FAILURE)
+        CPU: 55ms
+
+Mar 01 16:57:36 ip-172-31-5-243.us-east-2.compute.internal nginx[83213]: nginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)
+Mar 01 16:57:36 ip-172-31-5-243.us-east-2.compute.internal nginx[83213]: nginx: [emerg] bind() to [::]:80 failed (98: Address already in use)
+Mar 01 16:57:37 ip-172-31-5-243.us-east-2.compute.internal nginx[83213]: nginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)
+Mar 01 16:57:37 ip-172-31-5-243.us-east-2.compute.internal nginx[83213]: nginx: [emerg] bind() to [::]:80 failed (98: Address already in use)
+Mar 01 16:57:37 ip-172-31-5-243.us-east-2.compute.internal nginx[83213]: nginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)
+Mar 01 16:57:37 ip-172-31-5-243.us-east-2.compute.internal nginx[83213]: nginx: [emerg] bind() to [::]:80 failed (98: Address already in use)
+Mar 01 16:57:38 ip-172-31-5-243.us-east-2.compute.internal nginx[83213]: nginx: [emerg] still could not bind()
+Mar 01 16:57:38 ip-172-31-5-243.us-east-2.compute.internal systemd[1]: nginx.service: Control process exited, code=exited, status=1/FAILURE
+Mar 01 16:57:38 ip-172-31-5-243.us-east-2.compute.internal systemd[1]: nginx.service: Failed with result 'exit-code'.
+Mar 01 16:57:38 ip-172-31-5-243.us-east-2.compute.internal systemd[1]: Failed to start nginx.service - The nginx HTTP and reverse proxy server.
