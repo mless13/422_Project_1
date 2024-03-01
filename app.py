@@ -26,17 +26,18 @@ def home():
         username = request.form['username']
         password = request.form['password']
         
-    response = s3.list_objects_v2(Bucket=BUCKET_NAME)
+    try:
+        response = s3.list_objects_v2(Bucket=BUCKET_NAME)
+        objects = response.get('Contents', [])[:10]
 
-    #get 10 images
-    objects = response['Contents'][:10]
-
-
-    images = []
-    for obj in objects:
-        image_url = s3.generate_presigned_url('get_object', Params={'Bucket': BUCKET_NAME, 'Key': obj['Key']})
-        caption = obj['Key']  # You may need to modify this depending on how your images are named
-        images.append({'url': image_url, 'caption': caption})
+        images = []
+        for obj in objects:
+            image_url = s3.generate_presigned_url('get_object', Params={'Bucket': BUCKET_NAME, 'Key': obj['Key']})
+            caption = obj['Key']  # You may need to modify this depending on how your images are named
+            images.append({'url': image_url, 'caption': caption})
+    except Exception as e:
+      
+        return f"Error: {str(e)}", 500
 
     return  render_template('home.html', images=images)
 
