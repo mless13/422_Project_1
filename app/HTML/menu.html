@@ -1,17 +1,14 @@
-<!-- home.html -->
+<!-- menu.html -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../CSS/home.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../CSS/home.css" />
 
     <title>Home</title>
-</head>
-<body>
-    <h1>Home Page</h1>
-    <p>Welcome!</p>
-
+  </head>
+  <body>
     <h1>SE 422 Menu Options</h1>
     <div>
       {% for image in images %}
@@ -23,10 +20,7 @@
         />
         <p>{{ image.caption }}</p>
       </div>
-      
-    <form action="{{ url_for('login') }}" method="GET">
-        <button class="logoutButton">Logout</button>
-    </form>
-
-</body>
+      {% endfor %}
+    </div>
+  </body>
 </html>
