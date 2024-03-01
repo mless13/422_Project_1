@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 #from flask_sqlalchemy import SQLAlchemy
 #pip3 install boto3 flask
 import boto3
-from flask import Flask, render_template
+
 
 application = Flask(__name__, template_folder="app/HTML")
 
