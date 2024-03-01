@@ -25,7 +25,7 @@ def home():
 #    if request.method == 'POST':
  #       username = request.form['username']
   #      password = request.form['password']
-    print("Accessed home route"P
+    
     try:
         print("TRY")
         response = s3.list_objects_v2(Bucket=BUCKET_NAME)
