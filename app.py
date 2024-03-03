@@ -2,9 +2,19 @@ from flask import Flask, render_template, request
 #from flask_sqlalchemy import SQLAlchemy
 #pip3 install boto3 flask
 import boto3
+#pip install pymysql
+import pymysql
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask import Flask, render_template
 
 application = Flask(__name__, template_folder="app/HTML")
+application.secret_key = 'ben'
+
+# Database connection details
+DB_HOST = 'database-1.cjc0q8gai3nl.us-east-2.rds.amazonaws.com'
+DB_USER = 'admin'
+DB_PASSWORD = 'password'
+DB_NAME = 'flask_login'
 
 #for bucket access
 AWS_ACCESS_KEY_ID = 'AKIAZI2LHWQSB2BAXAKG'
@@ -13,12 +23,51 @@ BUCKET_NAME = '422p1bucket'
 EXPIRATION_TIME = 3600
 s3 = boto3.client('s3', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
 
-@application.route("/")
-def login():
-    return  render_template('login.html')
+# Function to get DB connection
+def get_db_connection():
+    return pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, db=DB_NAME, cursorclass=pymysql.cursors.DictCursor)
 
-@application.route("/new_account")
-def new_login():
+
+@application.route("/", methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        connection = get_db_connection()
+        try:
+            with connection.cursor() as cursor:
+                sql = "SELECT * FROM users WHERE username = %s AND password = %s"
+                cursor.execute(sql, (username, password))
+                result = cursor.fetchone()
+                if result:
+                    flash('Login successful!')
+                    return redirect(url_for('home'))
+                else:
+                    flash('Login Unsuccessful. Please check username and password')
+        finally:
+            connection.close()
+
+    return render_template('login.html')
+
+@application.route("/new_account", methods=['GET', 'POST'])
+def new_account():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        connection = get_db_connection()
+        try:
+            with connection.cursor() as cursor:
+                sql = "INSERT INTO users (username, password) VALUES (%s, %s)"
+                cursor.execute(sql, (username, password))
+            connection.commit()
+            flash('Account created successfully! Please login.')
+            return redirect(url_for('login'))
+        except pymysql.err.IntegrityError:
+            flash('Username already exists. Please choose another one.')
+        finally:
+            connection.close()
     return render_template('new_account.html')
 
 @application.route("/home", methods=['POST', 'GET'])

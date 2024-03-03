@@ -4,19 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Login</title>
 </head>
 <body>
-    <h1>Login Page</h1>
-    <p>Enter in Your Credentials.</p>
-    <form action="{{ url_for('home') }}" method="POST">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username"><br><br>
-        <label for="password">Password:</label>
-        <input type="text" id="password" name="password"><br><br>
-        <button class="loginButton">Login</button>
+    <h2>Login</h2>
+    <form action="/" method="post">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" required><br>
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" required><br><br>
+        <input type="submit" value="Login">
     </form>
-
-
+    <p>Don't have an account? <a href="/new_account">Create one</a>.</p>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
 </body>
 </html>
+
