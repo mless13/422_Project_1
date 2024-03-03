@@ -4,13 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../CSS/login.css">
     <title>Home</title>
 </head>
 <body>
     <h1>Login Page</h1>
     <p>Enter in Your Credentials.</p>
-    <form action="{{ url_for('home') }}" method="GET">
+    <form action="{{ url_for('home') }}" method="POST">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username"><br><br>
         <label for="password">Password:</label>

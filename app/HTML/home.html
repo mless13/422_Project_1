@@ -4,15 +4,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../CSS/home.css">
-
     <title>Home</title>
+
+    <script>
+      function filterImages() {
+          // Get the user input from the text box
+          var userInput = document.getElementById("imageSearch").value.toLowerCase();
+
+          // Get all the images on the page
+          var images = document.getElementsByTagName("img");
+
+          // Loop through each image
+          for (var i = 0; i < images.length; i++) {
+              // Get the image source and convert it to lowercase
+              var imageUrl = images[i].getAttribute("src").toLowerCase();
+              // Check if the image source contains the user input substring
+              if (imageUrl.indexOf(userInput) !== -1) {
+                  // If the image source contains the substring, display the image
+                  images[i].style.display = "inline-block";
+              } else {
+                  // If the image source does not contain the substring, hide the image
+                  images[i].style.display = "none";	  
+	      }
+          }
+      }
+  </script>
+
+
 </head>
 <body>
     <h1>Home Page</h1>
     <p>Welcome!</p>
 
     <h1>SE 422 Menu Options</h1>
+    <form action="{{ url_for('home') }}" method="POST" style="display: flex; align-items: center;">
+      <label for="imageSearch">Search For Image:</label>
+      <input type="text" id="imageSearch" name="image" style="flex: 1; margin-right: 10px;"><br><br>
+      <button class="imageSearchButton" style="width: 25%;" onclick="filterImages()">Search</button>
+  </form>
+  
+    
     <div>
       {% for image in images %}
       <div style="display: inline-block; margin: 10px">
@@ -23,6 +54,8 @@
         />
         <p>{{ image.caption }}</p>
       </div>
+      {% endfor %}
+    </div>
 
     <form action="{{ url_for('login') }}" method="GET">
         <button class="logoutButton">Logout</button>
